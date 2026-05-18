@@ -1,6 +1,6 @@
 {
-  "name": "ZAP Chat",
-  "short_name": "ZAP",
+  "name": "Zap Chat",
+  "short_name": "Zap Chat",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#EDF1F5",
