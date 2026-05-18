@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZAP Chat - Futuristic Messaging</title>
     <meta name="description" content="A secure, futuristic chat application integrated with Google Sheets.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0145F2">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -325,6 +327,23 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Install Button */
+        #install-btn {
+            height: 36px;
+            padding: 0 15px;
+            font-size: 0.85rem;
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            box-shadow: none;
+            border-radius: 10px;
+        }
+
+        #install-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
         /* Utility classes */
         .hidden {
             display: none !important;
@@ -352,9 +371,12 @@
                 <div class="logo-mark"></div>
                 <h1>ZAP CHAT</h1>
             </div>
-            <div class="user-status">
-                <div class="status-dot"></div>
-                <span id="current-user-display">Connecting...</span>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button id="install-btn" onclick="installPWA()">Install App</button>
+                <div class="user-status">
+                    <div class="status-dot"></div>
+                    <span id="current-user-display">Connecting...</span>
+                </div>
             </div>
         </header>
 
@@ -507,6 +529,38 @@
                 btn.innerHTML = originalBtnContent;
                 input.focus();
             }
+        }
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then((registration) => {
+                    console.log('SW registered:', registration);
+                }).catch((error) => {
+                    console.log('SW registration failed:', error);
+                });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) installBtn.classList.remove('hidden');
+        });
+
+        async function installPWA() {
+            if (!deferredPrompt) {
+                alert('The browser has not triggered the install prompt yet.\n\nThis usually happens if:\n1. You are opening the file directly (file://). You need to run it on a local server or host it on HTTPS.\n2. The browser is still checking criteria.\n\nIf you are on Chrome/Edge, look for the install icon in the address bar!');
+                return;
+            }
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            deferredPrompt = null;
+            const installBtn = document.getElementById('install-btn');
+            if (installBtn) installBtn.classList.add('hidden');
         }
     </script>
 </body>

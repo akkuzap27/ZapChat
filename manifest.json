@@ -1,0 +1,23 @@
+{
+  "name": "ZAP Chat",
+  "short_name": "ZAP",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#EDF1F5",
+  "theme_color": "#0145F2",
+  "description": "A futuristic chat application integrated with Google Sheets.",
+  "icons": [
+    {
+      "src": "192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
