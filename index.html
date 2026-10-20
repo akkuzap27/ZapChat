@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAPCHAT ⚡ — Connect. Chat. Stay Connected.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ZAPCHAT ⚡ - Notebook Aesthetic Theme */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-notebook: #fcfbfa;
+            --line-color: #e3ecf5;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --lavender-accent: #b19cd9;
+            --lavender-light: #f3eff9;
+            --purple-primary: #8e44ad;
+            --bubble-sent: #eadafc;
+            --bubble-received: #ffffff;
+            --border-color: #dcdde1;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --shadow: 0 4px 12px rgba(177, 156, 217, 0.15);
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--bg-primary); color: var(--text-primary); height: 100vh; overflow: hidden; -webkit-tap-highlight-color: transparent; }
+
+        .notebook-paper {
+            background-color: var(--bg-notebook);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 28px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            border-radius: 12px;
+        }
+
+        .offline-banner { background: #f39c12; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; transition: transform 0.3s ease; }
+        .offline-banner.hidden { transform: translateY(-100%); }
+        .hidden { display: none !important; }
+
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-family: var(--font-main); transition: all 0.2s ease; }
+        .primary-btn { background-color: var(--purple-primary); color: white; width: 100%; }
+        .primary-btn:hover { background-color: #732d91; }
+        .secondary-btn { background-color: var(--lavender-light); color: var(--purple-primary); border: 1px solid var(--lavender-accent); }
+        .primary-btn-sm, .secondary-btn-sm, .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 6px; border: none; cursor: pointer; }
+        .primary-btn-sm { background: var(--purple-primary); color: white; }
+        .secondary-btn-sm { background: var(--lavender-light); color: var(--purple-primary); }
+        .danger-btn-sm { background: var(--danger-color); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+
+        input, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-family: var(--font-main); background: white; outline: none; }
+        input:focus, textarea:focus { border-color: var(--purple-primary); }
+
+        .auth-screen { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #f9f7fd 0%, #ede6f8 100%); padding: 20px; }
+        .auth-card { width: 100%; max-width: 420px; padding: 30px; }
+        .brand-header { text-align: center; margin-bottom: 24px; }
+        .brand-header h1 { font-size: 32px; color: var(--purple-primary); font-weight: 700; }
+        .brand-header p { font-size: 14px; color: var(--text-secondary); }
+        .auth-form h2 { font-size: 20px; margin-bottom: 16px; color: var(--text-primary); }
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+        .input-hint { font-size: 11px; color: var(--text-secondary); margin-top: 4px; display: block; }
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .toggle-password { position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 16px; }
+        .error-msg { color: var(--danger-color); font-size: 12px; margin-bottom: 12px; min-height: 16px; }
+        .switch-auth { text-align: center; margin-top: 16px; font-size: 13px; }
+        .switch-auth a { color: var(--purple-primary); text-decoration: none; font-weight: 600; }
+
+        .app-screen { display: flex; flex-direction: column; height: 100vh; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: white; border-bottom: 1px solid var(--border-color); height: 60px; }
+        .header-brand h2 { font-size: 20px; color: var(--purple-primary); }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 6px; border-radius: 50%; }
+        .icon-btn:hover { background: var(--lavender-light); }
+
+        .avatar-sm, .avatar-lg { display: flex; align-items: center; justify-content: center; background: var(--lavender-accent); color: white; font-weight: 600; border-radius: 50%; overflow: hidden; }
+        .avatar-sm { width: 36px; height: 36px; font-size: 14px; }
+        .avatar-lg { width: 80px; height: 80px; font-size: 28px; margin: 0 auto 12px auto; }
+
+        .app-body { display: flex; flex: 1; overflow: hidden; }
+        .desktop-sidebar { width: 260px; background: var(--bg-notebook); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar-brand { padding: 0 20px 20px 20px; border-bottom: 1px solid var(--line-color); }
+        .sidebar-brand h2 { color: var(--purple-primary); font-size: 22px; }
+        .sidebar-nav-links { list-style: none; padding: 10px 0; }
+        .sidebar-nav-links li { display: flex; align-items: center; gap: 14px; padding: 12px 20px; cursor: pointer; font-weight: 500; color: var(--text-primary); transition: background 0.2s; }
+        .sidebar-nav-links li:hover, .sidebar-nav-links li.active { background: var(--lavender-light); color: var(--purple-primary); border-left: 4px solid var(--purple-primary); }
+
+        .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); height: 60px; justify-content: space-around; align-items: center; }
+        .nav-item-mobile { background: none; border: none; display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--text-secondary); cursor: pointer; gap: 2px; }
+        .nav-item-mobile .nav-icon { font-size: 18px; }
+        .nav-item-mobile.active { color: var(--purple-primary); }
+
+        .main-content-area { flex: 1; position: relative; overflow: hidden; background: white; }
+        .view-section { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .view-section.active { display: flex; }
+        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--line-color); }
+        .view-header h2 { font-size: 22px; color: var(--purple-primary); }
+
+        .conversations-list, .user-list { display: flex; flex-direction: column; gap: 8px; }
+        .conversation-card, .user-card { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 10px; background: var(--bg-notebook); border: 1px solid var(--border-color); cursor: pointer; }
+        .conversation-card:hover, .user-card:hover { background: var(--lavender-light); }
+        .conv-info { flex: 1; min-width: 0; margin-left: 14px; }
+        .conv-header-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .conv-username { font-weight: 600; font-size: 15px; }
+        .conv-preview { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .user-card-info { display: flex; align-items: center; gap: 12px; }
+        .user-card-details h4 { font-size: 15px; }
+        .user-card-details p { font-size: 12px; color: var(--text-secondary); }
+
+        .profile-card, .settings-list, .developer-card { max-width: 500px; margin: 0 auto; padding: 30px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+        .readonly-input { background-color: #f1f2f6; color: #57606f; }
+        .setting-item { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line-color); cursor: pointer; font-weight: 500; }
+        .setting-item.danger { color: var(--danger-color); }
+
+        .developer-card { text-align: center; }
+        .dev-avatar { font-size: 60px; width: 100px; height: 100px; background: var(--lavender-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 16px auto; border: 2px solid var(--lavender-accent); }
+        .developer-card h3 { font-size: 24px; color: var(--purple-primary); margin-bottom: 4px; }
+        .dev-role { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 16px; }
+        .dev-bio { font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+
+        .chat-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; display: flex; flex-direction: column; z-index: 100; }
+        .chat-header { display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: white; border-bottom: 1px solid var(--border-color); height: 60px; }
+        .chat-friend-info h3 { font-size: 16px; font-weight: 600; }
+        .status-indicator { font-size: 11px; color: var(--success-color); }
+        .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background-color: var(--bg-notebook); background-image: linear-gradient(var(--line-color) 1px, transparent 1px); background-size: 100% 32px; }
+        .message-bubble { max-width: 70%; padding: 10px 14px; border-radius: 14px; font-size: 14px; word-break: break-word; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .message-bubble.sent { background-color: var(--bubble-sent); align-self: flex-end; border-bottom-right-radius: 2px; }
+        .message-bubble.received { background-color: var(--bubble-received); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-color); }
+        .message-meta { display: flex; justify-content: flex-end; font-size: 10px; color: var(--text-secondary); margin-top: 4px; }
+        .message-composer { display: flex; align-items: flex-end; gap: 10px; padding: 12px 20px; background: white; border-top: 1px solid var(--border-color); }
+        .message-composer textarea { resize: none; max-height: 120px; line-height: 1.4; }
+
+        @media (max-width: 768px) {
+            .desktop-sidebar { display: none; }
+            .mobile-bottom-nav { display: flex; }
+            .view-section { padding: 16px; padding-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="offline-banner" class="offline-banner hidden">
+        <span>⚠️ You are offline. Real-time messaging requires an internet connection.</span>
+    </div>
+
+    <!-- AUTHENTICATION CONTAINER -->
+    <div id="auth-container" class="auth-screen">
+        <div class="auth-card notebook-paper">
+            <div class="brand-header">
+                <h1>ZAPCHAT ⚡</h1>
+                <p>Connect. Chat. Stay Connected.</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form">
+                <h2>Welcome Back</h2>
+                <div class="input-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" required autocomplete="username" placeholder="Enter your username">
+                </div>
+                <div class="input-group password-group">
+                    <label for="login-password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" required autocomplete="current-password" placeholder="Enter your password">
+                        <button type="button" class="toggle-password" data-target="login-password">👁️</button>
+                    </div>
+                </div>
+                <div id="login-error" class="error-msg"></div>
+                <button type="submit" class="btn primary-btn">Log In</button>
+                <p class="switch-auth">Don't have an account? <a href="#" id="show-register">Create Account</a></p>
+            </form>
+
+            <!-- Registration Form -->
+            <form id="register-form" class="auth-form hidden">
+                <h2>Create Account</h2>
+                <div class="input-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" required autocomplete="username" placeholder="Choose a unique username">
+                    <small class="input-hint">Case-insensitive. Unique across ZAPCHAT.</small>
+                </div>
+                <div class="input-group password-group">
+                    <label for="reg-password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-password" required autocomplete="new-password" placeholder="At least 4 characters">
+                        <button type="button" class="toggle-password" data-target="reg-password">👁️</button>
+                    </div>
+                </div>
+                <div class="input-group password-group">
+                    <label for="reg-confirm-password">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-confirm-password" required autocomplete="new-password" placeholder="Re-enter password">
+                        <button type="button" class="toggle-password" data-target="reg-confirm-password">👁️</button>
+                    </div>
+                </div>
+                <div id="reg-error" class="error-msg"></div>
+                <button type="submit" class="btn primary-btn">Create Account</button>
+                <p class="switch-auth">Already have an account? <a href="#" id="show-login">Log In</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-container" class="app-screen hidden">
+        <header class="app-header">
+            <div class="header-brand"><h2>ZAPCHAT ⚡</h2></div>
+            <div class="header-actions">
+                <button id="global-search-btn" class="icon-btn" title="Search Users">🔍</button>
+                <div id="header-avatar" class="avatar-sm">U</div>
+                <button id="settings-menu-btn" class="icon-btn" title="Settings">⚙️</button>
+            </div>
+        </header>
+
+        <div class="app-body">
+            <nav class="desktop-sidebar">
+                <div class="sidebar-brand"><h2>ZAPCHAT ⚡</h2></div>
+                <ul class="sidebar-nav-links">
+                    <li class="nav-item active" data-target="chats-view"><span class="nav-icon">💬</span><span class="nav-label">Chats</span></li>
+                    <li class="nav-item" data-target="friends-view"><span class="nav-icon">👥</span><span class="nav-label">Find Users</span></li>
+                    <li class="nav-item" data-target="profile-view"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></li>
+                    <li class="nav-item" data-target="settings-view"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></li>
+                </ul>
+            </nav>
+
+            <main class="main-content-area">
+                <!-- 1. CHATS VIEW -->
+                <section id="chats-view" class="view-section active">
+                    <div class="view-header">
+                        <h2>Chats</h2>
+                    </div>
+                    <div id="conversations-list" class="conversations-list"></div>
+                    <div id="chats-empty-state" class="hidden" style="text-align:center; margin-top:40px;">
+                        <p>No conversations yet.</p>
+                        <button class="btn secondary-btn" onclick="switchView('friends-view')" style="margin-top:10px;">Find Users to Chat</button>
+                    </div>
+                </section>
+
+                <!-- 2. FIND USERS VIEW (Direct Chat, No Requests) -->
+                <section id="friends-view" class="view-section">
+                    <div class="view-header">
+                        <h2>Find Users</h2>
+                        <div style="display:flex; gap:8px; width:300px;">
+                            <input type="text" id="user-search-input" placeholder="Search by username...">
+                            <button id="user-search-btn" class="btn primary-btn-sm">Search</button>
+                        </div>
+                    </div>
+                    <div id="search-results-list" class="user-list"></div>
+                </section>
+
+                <!-- 3. PROFILE VIEW -->
+                <section id="profile-view" class="view-section">
+                    <div class="view-header"><h2>My Profile</h2></div>
+                    <div class="profile-card notebook-paper">
+                        <div style="text-align:center; margin-bottom:20px;">
+                            <div id="profile-avatar-display" class="avatar-lg">U</div>
+                        </div>
+                        <div class="form-group"><label>Username</label><input type="text" id="profile-username" readonly class="readonly-input"></div>
+                        <div class="form-group"><label>Display Name</label><input type="text" id="profile-display-name" placeholder="Your display name"></div>
+                        <div class="form-group"><label>Short Bio</label><textarea id="profile-bio" rows="3" placeholder="Tell your friends about yourself..."></textarea></div>
+                        <div class="form-group"><label>Member Since</label><input type="text" id="profile-created-at" readonly class="readonly-input"></div>
+                        <button id="save-profile-btn" class="btn primary-btn">Save Changes</button>
+                    </div>
+                </section>
+
+                <!-- 4. SETTINGS VIEW -->
+                <section id="settings-view" class="view-section">
+                    <div class="view-header"><h2>Settings</h2></div>
+                    <div class="settings-list notebook-paper">
+                        <div class="setting-item" onclick="switchView('profile-view')"><span>👤 Edit Profile</span><span>➔</span></div>
+                        <div class="setting-item" onclick="alert('ZAPCHAT ⚡ v1.0.0 — Notebook-Inspired Messaging')"><span>ℹ️ About ZAPCHAT</span><span>➔</span></div>
+                        <div class="setting-item" onclick="switchView('developer-view')"><span>⚡ Meet the Developer (AKKU ZAP)</span><span>➔</span></div>
+                        <div class="setting-item danger" id="logout-btn"><span>🚪 Log Out</span><span>➔</span></div>
+                    </div>
+                </section>
+
+                <!-- 5. DEVELOPER VIEW -->
+                <section id="developer-view" class="view-section">
+                    <div class="view-header">
+                        <button class="btn secondary-btn-sm" onclick="switchView('settings-view')">← Back</button>
+                        <h2>Meet the Developer</h2>
+                    </div>
+                    <div class="developer-card notebook-paper">
+                        <div class="dev-avatar">⚡</div>
+                        <h3>AKKU ZAP ⚡</h3>
+                        <p class="dev-role">Founder & Developer of ZAPCHAT</p>
+                        <p class="dev-bio">Passionate software architect and designer crafting minimalist, high-performance, and secure real-time messaging systems with a modern notebook aesthetic.</p>
+                        <div class="dev-links" style="margin-top: 15px;">
+                            <a href="https://www.instagram.com/_akku__zap_?exln=MWF3d2RueWtxaGJ5cg==" target="_blank" class="btn secondary-btn-sm" style="text-decoration:none;">Instagram Profile</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. PRIVATE CHAT SCREEN -->
+                <section id="chat-screen" class="chat-screen hidden">
+                    <div class="chat-header">
+                        <button id="close-chat-btn" class="icon-btn">←</button>
+                        <div id="chat-friend-avatar" class="avatar-sm">F</div>
+                        <div class="chat-friend-info">
+                            <h3 id="chat-friend-username">username</h3>
+                            <span class="status-indicator">online</span>
+                        </div>
+                    </div>
+                    <div id="messages-container" class="messages-container"></div>
+                    <div class="message-composer">
+                        <textarea id="message-input" rows="1" placeholder="Type a message..."></textarea>
+                        <button id="send-message-btn" class="btn primary-btn-sm">Send</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <nav class="mobile-bottom-nav">
+            <button class="nav-item-mobile active" data-target="chats-view"><span class="nav-icon">💬</span><span class="nav-label">Chats</span></button>
+            <button class="nav-item-mobile" data-target="friends-view"><span class="nav-icon">👥</span><span class="nav-label">Find</span></button>
+            <button class="nav-item-mobile" data-target="profile-view"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+            <button class="nav-item-mobile" data-target="settings-view"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+        </nav>
+    </div>
+
+    <!-- Firebase & App Script Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, orderBy, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXc1fJyqo6BSj30Vv-axprkY2ULBHyWkY",
+            authDomain: "zapchat-591ed.firebaseapp.com",
+            projectId: "zapchat-591ed",
+            storageBucket: "zapchat-591ed.firebasestorage.app",
+            messagingSenderId: "611183131307",
+            appId: "1:611183131307:web:1dd87df6f0938c9fa7d5ee",
+            measurementId: "G-DGVWEZWF66"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        const SESSION_KEY = "zapchat_current_user";
+
+        // Password toggle
+        document.querySelectorAll(".toggle-password").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const input = document.getElementById(e.target.getAttribute("data-target"));
+                input.type = input.type === "password" ? "text" : "password";
+            });
+        });
+
+        // Auth Screens Switch
+        document.getElementById("show-register").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("login-form").classList.add("hidden");
+            document.getElementById("register-form").classList.remove("hidden");
+        });
+        document.getElementById("show-login").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("register-form").classList.add("hidden");
+            document.getElementById("login-form").classList.remove("hidden");
+        });
+
+        // Registration
+        document.getElementById("register-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById("reg-error");
+            errEl.textContent = "";
+            const username = document.getElementById("reg-username").value.trim().toLowerCase();
+            const password = document.getElementById("reg-password").value;
+            const confirmPassword = document.getElementById("reg-confirm-password").value;
+
+            if (username.length < 3) { errEl.textContent = "Username must be at least 3 characters."; return; }
+            if (password !== confirmPassword) { errEl.textContent = "Passwords do not match."; return; }
+
+            try {
+                const userRef = doc(db, "users", username);
+                const snap = await getDoc(userRef);
+                if (snap.exists()) { errEl.textContent = "Username already taken."; return; }
+
+                const uid = "user_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+                const userData = {
+                    uid, username, password,
+                    displayName: username,
+                    bio: "Hey there! I'm using ZAPCHAT ⚡",
+                    createdAt: new Date()
+                };
+
+                await setDoc(userRef, userData);
+                localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
+                initApp(userData);
+            } catch (err) {
+                console.error(err);
+                errEl.textContent = "Registration failed. Check rules.";
+            }
+        });
+
+        // Login
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById("login-error");
+            errEl.textContent = "";
+            const username = document.getElementById("login-username").value.trim().toLowerCase();
+            const password = document.getElementById("login-password").value;
+
+            try {
+                const userRef = doc(db, "users", username);
+                const snap = await getDoc(userRef);
+                if (!snap.exists()) { errEl.textContent = "Username not found."; return; }
+                
+                const userData = snap.data();
+                if (userData.password !== password) { errEl.textContent = "Incorrect password."; return; }
+
+                localStorage.setItem(SESSION_KEY, JSON.stringify(userData));
+                initApp(userData);
+            } catch (err) {
+                console.error(err);
+                errEl.textContent = "Login failed.";
+            }
+        });
+
+        // Logout
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            localStorage.removeItem(SESSION_KEY);
+            location.reload();
+        });
+
+        // Navigation Switcher
+        window.switchView = (id) => {
+            document.querySelectorAll(".view-section").forEach(s => s.classList.remove("active"));
+            document.getElementById(id).classList.add("active");
+            document.querySelectorAll(".sidebar-nav-links li, .mobile-bottom-nav button").forEach(n => {
+                n.classList.toggle("active", n.getAttribute("data-target") === id);
+            });
+        };
+        document.querySelectorAll(".sidebar-nav-links li, .mobile-bottom-nav button").forEach(item => {
+            item.addEventListener("click", () => {
+                const target = item.getAttribute("data-target");
+                if (target) switchView(target);
+            });
+        });
+        document.getElementById("global-search-btn").addEventListener("click", () => switchView("friends-view"));
+        document.getElementById("settings-menu-btn").addEventListener("click", () => switchView("settings-view"));
+
+        let currentUser = null;
+
+        async function initApp(user) {
+            currentUser = user;
+            document.getElementById("auth-container").classList.add("hidden");
+            document.getElementById("app-container").classList.remove("hidden");
+
+            // Profile Setup
+            document.getElementById("profile-username").value = `@${user.username}`;
+            document.getElementById("profile-display-name").value = user.displayName || "";
+            document.getElementById("profile-bio").value = user.bio || "";
+            document.getElementById("profile-created-at").value = user.createdAt ? new Date(user.createdAt.seconds ? user.createdAt.seconds * 1000 : user.createdAt).toLocaleDateString() : "Recently";
+            const initial = user.username.charAt(0).toUpperCase();
+            document.getElementById("profile-avatar-display").textContent = initial;
+            document.getElementById("header-avatar").textContent = initial;
+
+            document.getElementById("save-profile-btn").onclick = async () => {
+                const newName = document.getElementById("profile-display-name").value.trim();
+                const newBio = document.getElementById("profile-bio").value.trim();
+                await updateDoc(doc(db, "users", user.username), { displayName: newName, bio: newBio });
+                alert("Profile updated successfully!");
+            };
+
+            // Conversations Listener
+            const convsQuery = query(collection(db, "conversations"), where("participantUsernames", "array-contains", user.username));
+            onSnapshot(convsQuery, async (snapshot) => {
+                const list = document.getElementById("conversations-list");
+                list.innerHTML = "";
+                if (snapshot.empty) {
+                    document.getElementById("chats-empty-state").classList.remove("hidden");
+                    return;
+                }
+                document.getElementById("chats-empty-state").classList.add("hidden");
+                
+                snapshot.forEach(async (d) => {
+                    const conv = d.data();
+                    const otherUsername = conv.participantUsernames.find(u => u !== user.username);
+
+                    const card = document.createElement("div");
+                    card.className = "conversation-card";
+                    card.onclick = () => openChat(d.id, otherUsername);
+                    card.innerHTML = `
+                        <div class="avatar-sm">${otherUsername.charAt(0).toUpperCase()}</div>
+                        <div class="conv-info">
+                            <div class="conv-header-row"><span class="conv-username">@${otherUsername}</span></div>
+                            <div class="conv-preview">${conv.lastMessagePreview || 'No messages yet'}</div>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const saved = localStorage.getItem(SESSION_KEY);
+            if (saved) {
+                initApp(JSON.parse(saved));
+            }
+        });
+
+        // Direct User Search & Chat Initialization
+        document.getElementById("user-search-btn").addEventListener("click", async () => {
+            const term = document.getElementById("user-search-input").value.trim().toLowerCase();
+            const list = document.getElementById("search-results-list");
+            if (!term) return;
+            list.innerHTML = "<p>Searching...</p>";
+            const q = query(collection(db, "users"), where("username", ">=", term), where("username", "<=", term + "\uf8ff"));
+            const snap = await getDocs(q);
+            list.innerHTML = "";
+            let found = false;
+            snap.forEach(d => {
+                const u = d.data();
+                if (u.username === currentUser.username) return;
+                found = true;
+                const card = document.createElement("div");
+                card.className = "user-card";
+                card.innerHTML = `
+                    <div class="user-card-info">
+                        <div class="avatar-sm">${u.username.charAt(0).toUpperCase()}</div>
+                        <div class="user-card-details"><h4>@${u.username}</h4><p>${u.displayName || u.username}</p></div>
+                    </div>
+                    <button class="btn primary-btn-sm" onclick="startChatWith('${u.username}')">Chat 💬</button>
+                `;
+                list.appendChild(card);
+            });
+            if (!found) {
+                list.innerHTML = "<p>No users found.</p>";
+            }
+        });
+
+        window.startChatWith = async (targetUsername) => {
+            const convsRef = collection(db, "conversations");
+            const q = query(convsRef, where("participantUsernames", "array-contains", currentUser.username));
+            const snap = await getDocs(q);
+            let convId = null;
+            snap.forEach(d => {
+                if (d.data().participantUsernames.includes(targetUsername)) {
+                    convId = d.id;
+                }
+            });
+
+            if (!convId) {
+                const newConv = await addDoc(convsRef, {
+                    participantUsernames: [currentUser.username, targetUsername],
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    lastMessagePreview: "Started conversation"
+                });
+                convId = newConv.id;
+            }
+            openChat(convId, targetUsername);
+            switchView('chats-view');
+        };
+
+        let activeConvId = null;
+        let msgUnsub = null;
+
+        window.openChat = async (convId, friendUsername) => {
+            activeConvId = convId;
+            document.getElementById("chat-friend-username").textContent = `@${friendUsername}`;
+            document.getElementById("chat-screen").classList.remove("hidden");
+
+            if (msgUnsub) msgUnsub();
+            const msgCont = document.getElementById("messages-container");
+            const msgQuery = query(collection(db, "conversations", convId, "messages"), orderBy("createdAt", "asc"));
+            
+            msgUnsub = onSnapshot(msgQuery, (snap) => {
+                msgCont.innerHTML = "";
+                if (snap.empty) {
+                    msgCont.innerHTML = "<p style='text-align:center; color:var(--text-secondary); margin-top:20px;'>Say hello! ⚡</p>";
+                    return;
+                }
+                snap.forEach(d => {
+                    const m = d.data();
+                    const isSent = m.senderUsername === currentUser.username;
+                    const bubble = document.createElement("div");
+                    bubble.className = `message-bubble ${isSent ? 'sent' : 'received'}`;
+                    bubble.innerHTML = `<div>${m.text}</div><div class="message-meta">${m.createdAt ? new Date(m.createdAt.toDate ? m.createdAt.toDate() : m.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</div>`;
+                    msgCont.appendChild(bubble);
+                });
+                msgCont.scrollTop = msgCont.scrollHeight;
+            });
+        };
+
+        document.getElementById("close-chat-btn").addEventListener("click", () => {
+            document.getElementById("chat-screen").classList.add("hidden");
+            if (msgUnsub) msgUnsub();
+            activeConvId = null;
+        });
+
+        document.getElementById("send-message-btn").addEventListener("click", sendMsg);
+        document.getElementById("message-input").addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+        });
+
+        async function sendMsg() {
+            const input = document.getElementById("message-input");
+            const text = input.value.trim();
+            if (!text || !activeConvId) return;
+            input.value = "";
+            await addDoc(collection(db, "conversations", activeConvId, "messages"), {
+                senderUsername: currentUser.username,
+                text,
+                createdAt: new Date()
+            });
+            await updateDoc(doc(db, "conversations", activeConvId), {
+                updatedAt: new Date(),
+                lastMessagePreview: text
+            });
+        }
+    </script>
+</body>
+</html>
