@@ -8,25 +8,26 @@
     <meta name="theme-color" content="#8e44ad">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ZAPCHAT ⚡ - Notebook Aesthetic Theme & Full Screen Layout */
         :root {
             --bg-primary: #ffffff;
-            --bg-notebook: #fcfbfa;
-            --line-color: #e3ecf5;
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
+            --bg-notebook: #f9f8fc;
+            --line-color: #edeaf5;
+            --text-primary: #1e1b2e;
+            --text-secondary: #6e6885;
             --lavender-accent: #b19cd9;
             --lavender-light: #f3eff9;
-            --purple-primary: #8e44ad;
-            --bubble-sent: #eadafc;
+            --purple-primary: #7c3aed;
+            --purple-hover: #6d28d9;
+            --bubble-sent: #ede9fe;
             --bubble-received: #ffffff;
-            --border-color: #dcdde1;
-            --danger-color: #e74c3c;
-            --success-color: #2ecc71;
-            --shadow: 0 4px 12px rgba(177, 156, 217, 0.15);
-            --font-main: 'Inter', sans-serif;
+            --border-color: #e4e1f0;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.08), 0 8px 10px -6px rgba(124, 58, 237, 0.08);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,141 +43,151 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        .notebook-paper {
-            background-color: var(--bg-notebook);
-            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
-            background-size: 100% 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            border-radius: 12px;
+        h1, h2, h3, h4, .brand-header h1, .sidebar-brand h2, .view-header h2 {
+            font-family: var(--font-heading);
+            letter-spacing: -0.02em;
         }
 
-        .offline-banner { background: #f39c12; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; transition: transform 0.3s ease; }
+        .notebook-paper {
+            background-color: var(--bg-notebook);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            border-radius: 16px;
+        }
+
+        .offline-banner { background: #f59e0b; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: 500; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; transition: transform 0.3s ease; }
         .offline-banner.hidden { transform: translateY(-100%); }
         .hidden { display: none !important; }
 
-        .btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-family: var(--font-main); transition: all 0.2s ease; }
-        .primary-btn { background-color: var(--purple-primary); color: white; width: 100%; }
-        .primary-btn:hover { background-color: #732d91; }
+        .btn { padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-family: var(--font-main); transition: all 0.2s ease; font-size: 14px; }
+        .primary-btn { background-color: var(--purple-primary); color: white; width: 100%; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25); }
+        .primary-btn:hover { background-color: var(--purple-hover); transform: translateY(-1px); }
         .secondary-btn { background-color: var(--lavender-light); color: var(--purple-primary); border: 1px solid var(--lavender-accent); }
-        .primary-btn-sm, .secondary-btn-sm, .btn-sm { padding: 6px 12px; font-size: 13px; border-radius: 6px; border: none; cursor: pointer; }
+        .primary-btn-sm, .secondary-btn-sm, .btn-sm { padding: 8px 14px; font-size: 13px; border-radius: 8px; border: none; cursor: pointer; font-family: var(--font-main); font-weight: 600; }
         .primary-btn-sm { background: var(--purple-primary); color: white; }
         .secondary-btn-sm { background: var(--lavender-light); color: var(--purple-primary); }
-        .danger-btn-sm { background: var(--danger-color); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+        .danger-btn-sm { background: var(--danger-color); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
 
-        input, textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-family: var(--font-main); background: white; outline: none; }
-        input:focus, textarea:focus { border-color: var(--purple-primary); }
+        input, textarea { width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; font-family: var(--font-main); background: white; outline: none; font-size: 14px; color: var(--text-primary); transition: border-color 0.2s; }
+        input:focus, textarea:focus { border-color: var(--purple-primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1); }
 
-        .auth-screen { display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh; height: 100dvh; background: linear-gradient(135deg, #f9f7fd 0%, #ede6f8 100%); padding: 20px; position: absolute; top: 0; left: 0; z-index: 200; }
-        .auth-card { width: 100%; max-width: 420px; padding: 30px; }
-        .brand-header { text-align: center; margin-bottom: 24px; }
-        .brand-header h1 { font-size: 32px; color: var(--purple-primary); font-weight: 700; }
+        .auth-screen { display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh; height: 100dvh; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); padding: 20px; position: absolute; top: 0; left: 0; z-index: 200; }
+        .auth-card { width: 100%; max-width: 420px; padding: 36px; }
+        .brand-header { text-align: center; margin-bottom: 28px; }
+        .brand-header h1 { font-size: 32px; color: var(--purple-primary); font-weight: 700; margin-bottom: 4px; }
         .brand-header p { font-size: 14px; color: var(--text-secondary); }
-        .auth-form h2 { font-size: 20px; margin-bottom: 16px; color: var(--text-primary); }
-        .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+        .auth-form h2 { font-size: 20px; margin-bottom: 20px; color: var(--text-primary); font-weight: 600; }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary); }
         .input-hint { font-size: 11px; color: var(--text-secondary); margin-top: 4px; display: block; }
         .password-wrapper { position: relative; display: flex; align-items: center; }
-        .toggle-password { position: absolute; right: 10px; background: none; border: none; cursor: pointer; font-size: 16px; }
-        .error-msg { color: var(--danger-color); font-size: 12px; margin-bottom: 12px; min-height: 16px; }
-        .switch-auth { text-align: center; margin-top: 16px; font-size: 13px; }
+        .toggle-password { position: absolute; right: 12px; background: none; border: none; cursor: pointer; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+        .error-msg { color: var(--danger-color); font-size: 12px; margin-bottom: 12px; min-height: 16px; font-weight: 500; }
+        .switch-auth { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-secondary); }
         .switch-auth a { color: var(--purple-primary); text-decoration: none; font-weight: 600; }
 
         .app-screen { display: flex; flex-direction: column; width: 100vw; height: 100vh; height: 100dvh; position: absolute; top: 0; left: 0; }
-        .app-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: white; border-bottom: 1px solid var(--border-color); height: 60px; flex-shrink: 0; }
-        .header-brand h2 { font-size: 20px; color: var(--purple-primary); }
+        .app-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background: white; border-bottom: 1px solid var(--border-color); height: 68px; flex-shrink: 0; }
+        .header-brand { display: flex; align-items: center; gap: 8px; }
+        .header-brand h2 { font-size: 22px; color: var(--purple-primary); font-weight: 700; }
         .header-actions { display: flex; align-items: center; gap: 12px; }
-        .icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 6px; border-radius: 50%; }
-        .icon-btn:hover { background: var(--lavender-light); }
+        .icon-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 8px; border-radius: 10px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .icon-btn:hover { background: var(--lavender-light); color: var(--purple-primary); }
 
-        .avatar-sm, .avatar-lg { display: flex; align-items: center; justify-content: center; background: var(--lavender-accent); color: white; font-weight: 600; border-radius: 50%; overflow: hidden; background-size: cover; background-position: center; }
-        .avatar-sm { width: 36px; height: 36px; font-size: 14px; flex-shrink: 0; }
-        .avatar-lg { width: 90px; height: 90px; font-size: 32px; margin: 0 auto 12px auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 2px solid var(--purple-primary); }
+        .avatar-sm, .avatar-lg { display: flex; align-items: center; justify-content: center; background: var(--lavender-accent); color: white; font-weight: 600; border-radius: 50%; overflow: hidden; background-size: cover; background-position: center; font-family: var(--font-heading); }
+        .avatar-sm { width: 40px; height: 40px; font-size: 15px; flex-shrink: 0; }
+        .avatar-lg { width: 96px; height: 96px; font-size: 34px; margin: 0 auto 16px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 3px solid var(--purple-primary); }
 
         .app-body { display: flex; flex: 1; overflow: hidden; width: 100%; position: relative; }
-        .desktop-sidebar { width: 260px; background: var(--bg-notebook); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
-        .sidebar-brand { padding: 0 20px 20px 20px; border-bottom: 1px solid var(--line-color); }
-        .sidebar-brand h2 { color: var(--purple-primary); font-size: 22px; }
-        .sidebar-nav-links { list-style: none; padding: 10px 0; }
-        .sidebar-nav-links li { display: flex; align-items: center; gap: 14px; padding: 12px 20px; cursor: pointer; font-weight: 500; color: var(--text-primary); transition: background 0.2s; }
-        .sidebar-nav-links li:hover, .sidebar-nav-links li.active { background: var(--lavender-light); color: var(--purple-primary); border-left: 4px solid var(--purple-primary); }
+        .desktop-sidebar { width: 280px; background: var(--bg-notebook); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 24px 0; flex-shrink: 0; }
+        .sidebar-brand { padding: 0 24px 20px 24px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-brand h2 { color: var(--purple-primary); font-size: 22px; font-weight: 700; }
+        .sidebar-nav-links { list-style: none; padding: 16px 0; }
+        .sidebar-nav-links li { display: flex; align-items: center; gap: 14px; padding: 14px 24px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--text-secondary); transition: all 0.2s; }
+        .sidebar-nav-links li svg { width: 20px; height: 20px; stroke-width: 2px; }
+        .sidebar-nav-links li:hover, .sidebar-nav-links li.active { background: var(--lavender-light); color: var(--purple-primary); border-right: 4px solid var(--purple-primary); }
 
-        .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); height: 60px; justify-content: space-around; align-items: center; flex-shrink: 0; width: 100%; }
-        .nav-item-mobile { background: none; border: none; display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--text-secondary); cursor: pointer; gap: 2px; }
-        .nav-item-mobile .nav-icon { font-size: 18px; }
+        .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); height: 68px; justify-content: space-around; align-items: center; flex-shrink: 0; width: 100%; }
+        .nav-item-mobile { background: none; border: none; display: flex; flex-direction: column; align-items: center; font-size: 11px; font-weight: 600; color: var(--text-secondary); cursor: pointer; gap: 4px; font-family: var(--font-main); }
+        .nav-item-mobile svg { width: 22px; height: 22px; stroke-width: 2px; }
         .nav-item-mobile.active { color: var(--purple-primary); }
 
         .main-content-area { flex: 1; position: relative; overflow: hidden; background: white; height: 100%; }
-        .view-section { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; padding: 20px; overflow-y: auto; width: 100%; height: 100%; }
+        .view-section { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: column; padding: 28px; overflow-y: auto; width: 100%; height: 100%; }
         .view-section.active { display: flex; }
-        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--line-color); flex-shrink: 0; }
-        .view-header h2 { font-size: 22px; color: var(--purple-primary); }
+        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+        .view-header h2 { font-size: 24px; color: var(--purple-primary); font-weight: 700; }
 
-        .conversations-list, .user-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        .conversation-card, .user-card { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 10px; background: var(--bg-notebook); border: 1px solid var(--border-color); cursor: pointer; width: 100%; }
-        .conversation-card:hover, .user-card:hover { background: var(--lavender-light); }
+        .conversations-list, .user-list { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .conversation-card, .user-card { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 12px; background: var(--bg-notebook); border: 1px solid var(--border-color); cursor: pointer; width: 100%; transition: transform 0.1s ease, background 0.2s; }
+        .conversation-card:hover, .user-card:hover { background: var(--lavender-light); border-color: var(--lavender-accent); }
         .conv-info { flex: 1; min-width: 0; margin-left: 14px; }
         .conv-header-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .conv-username { font-weight: 600; font-size: 15px; }
-        .conv-preview { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .conv-username { font-weight: 700; font-size: 15px; font-family: var(--font-heading); }
+        .conv-preview { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
 
-        .user-card-info { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; cursor: pointer; }
+        .user-card-info { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
         .user-card-details { min-width: 0; flex: 1; }
-        .user-card-details h4 { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-card-details h4 { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--font-heading); }
         .user-card-details p { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .profile-card, .settings-list, .developer-card { max-width: 500px; margin: 0 auto; padding: 30px; width: 100%; }
-        .form-group { margin-bottom: 16px; }
+        .profile-card, .settings-list, .developer-card { max-width: 520px; margin: 0 auto; padding: 36px; width: 100%; }
+        .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-        .readonly-input { background-color: #f1f2f6; color: #57606f; }
-        .setting-item { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--line-color); cursor: pointer; font-weight: 500; }
+        .readonly-input { background-color: #f3f2f8; color: #6e6885; }
+        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--border-color); cursor: pointer; font-weight: 600; font-size: 14px; transition: color 0.2s; }
+        .setting-item:hover { color: var(--purple-primary); }
         .setting-item.danger { color: var(--danger-color); }
+        .setting-item svg { width: 18px; height: 18px; color: var(--text-secondary); }
 
         .developer-card { text-align: center; }
-        .dev-avatar { font-size: 60px; width: 100px; height: 100px; background: var(--lavender-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 16px auto; border: 2px solid var(--lavender-accent); }
-        .developer-card h3 { font-size: 24px; color: var(--purple-primary); margin-bottom: 4px; }
+        .dev-avatar { font-size: 40px; width: 90px; height: 90px; background: var(--lavender-light); display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 16px auto; border: 2px solid var(--lavender-accent); color: var(--purple-primary); }
+        .developer-card h3 { font-size: 24px; color: var(--purple-primary); margin-bottom: 4px; font-weight: 700; }
         .dev-role { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 16px; }
-        .dev-bio { font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+        .dev-bio { font-size: 14px; line-height: 1.6; margin-bottom: 24px; color: var(--text-secondary); }
 
         /* Profile Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
-        .modal-card { width: 100%; max-width: 380px; padding: 24px; text-align: center; position: relative; }
-        .close-modal { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-card { width: 100%; max-width: 400px; padding: 32px; text-align: center; position: relative; }
+        .close-modal { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-secondary); }
 
         .chat-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white; display: flex; flex-direction: column; z-index: 100; width: 100%; height: 100%; }
-        .chat-header { display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: white; border-bottom: 1px solid var(--border-color); height: 60px; flex-shrink: 0; }
-        .chat-friend-info h3 { font-size: 16px; font-weight: 600; cursor: pointer; }
-        .status-indicator { font-size: 11px; color: var(--success-color); }
-        .messages-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background-color: var(--bg-notebook); background-image: linear-gradient(var(--line-color) 1px, transparent 1px); background-size: 100% 32px; }
-        .message-bubble { max-width: 70%; padding: 10px 14px; border-radius: 14px; font-size: 14px; word-break: break-word; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .message-bubble.sent { background-color: var(--bubble-sent); align-self: flex-end; border-bottom-right-radius: 2px; }
-        .message-bubble.received { background-color: var(--bubble-received); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-color); }
-        .message-meta { display: flex; justify-content: flex-end; font-size: 10px; color: var(--text-secondary); margin-top: 4px; }
-        .message-composer { display: flex; align-items: flex-end; gap: 10px; padding: 12px 20px; background: white; border-top: 1px solid var(--border-color); flex-shrink: 0; }
-        .message-composer textarea { resize: none; max-height: 120px; line-height: 1.4; }
+        .chat-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: white; border-bottom: 1px solid var(--border-color); height: 68px; flex-shrink: 0; }
+        .chat-header-left { display: flex; align-items: center; gap: 14px; }
+        .chat-friend-info h3 { font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); }
+        .status-indicator { font-size: 12px; color: var(--success-color); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .status-indicator::before { content: ''; width: 6px; height: 6px; background: var(--success-color); border-radius: 50%; display: inline-block; }
+        
+        .messages-container { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 14px; background-color: var(--bg-notebook); }
+        .message-bubble { max-width: 70%; padding: 12px 16px; border-radius: 16px; font-size: 14px; word-break: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .message-bubble.sent { background-color: var(--bubble-sent); align-self: flex-end; border-bottom-right-radius: 4px; }
+        .message-bubble.received { background-color: var(--bubble-received); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border-color); }
+        .message-meta { display: flex; justify-content: flex-end; font-size: 11px; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
+        .message-composer { display: flex; align-items: flex-end; gap: 12px; padding: 16px 24px; background: white; border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        .message-composer textarea { resize: none; max-height: 120px; line-height: 1.5; }
 
         @media (max-width: 768px) {
             .desktop-sidebar { display: none; }
             .mobile-bottom-nav { display: flex; }
-            .view-section { padding: 16px; padding-bottom: 80px; }
+            .view-section { padding: 20px; padding-bottom: 90px; }
         }
     </style>
 </head>
 <body>
     <div id="offline-banner" class="offline-banner hidden">
-        <span>⚠️ You are offline. Showing cached profiles from IndexedDB.</span>
+        <span>⚠️ Offline Mode: Loaded cached profiles from local storage.</span>
     </div>
 
-    <!-- PROFILE VIEW MODAL (Popup when clicking a profile) -->
+    <!-- PROFILE VIEW MODAL -->
     <div id="profile-modal" class="modal-overlay hidden">
         <div class="modal-card notebook-paper">
             <button class="close-modal" id="close-profile-modal">✕</button>
             <div id="modal-avatar" class="avatar-lg">U</div>
-            <h3 id="modal-username" style="color:var(--purple-primary); margin-bottom:4px;">@username</h3>
-            <p id="modal-display-name" style="font-weight:600; margin-bottom:12px;"></p>
-            <p id="modal-bio" style="font-size:13px; color:var(--text-secondary); margin-bottom:16px; padding:0 10px;"></p>
-            <p id="modal-joined" style="font-size:11px; color:var(--text-secondary); margin-bottom:20px;"></p>
-            <button id="modal-chat-btn" class="btn primary-btn">Start Chat 💬</button>
+            <h3 id="modal-username" style="color:var(--purple-primary); margin-bottom:4px; font-size:20px;">@username</h3>
+            <p id="modal-display-name" style="font-weight:700; margin-bottom:12px; font-size:15px;"></p>
+            <p id="modal-bio" style="font-size:13px; color:var(--text-secondary); margin-bottom:20px; padding:0 10px; line-height:1.5;"></p>
+            <p id="modal-joined" style="font-size:11px; color:var(--text-secondary); margin-bottom:24px; font-weight:500;"></p>
+            <button id="modal-chat-btn" class="btn primary-btn">Start Message</button>
         </div>
     </div>
 
@@ -188,7 +199,6 @@
                 <p>Connect. Chat. Stay Connected.</p>
             </div>
 
-            <!-- Login Form -->
             <form id="login-form" class="auth-form">
                 <h2>Welcome Back</h2>
                 <div class="input-group">
@@ -199,7 +209,9 @@
                     <label for="login-password">Password</label>
                     <div class="password-wrapper">
                         <input type="password" id="login-password" required autocomplete="current-password" placeholder="Enter your password">
-                        <button type="button" class="toggle-password" data-target="login-password">👁️</button>
+                        <button type="button" class="toggle-password" data-target="login-password">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
                     </div>
                 </div>
                 <div id="login-error" class="error-msg"></div>
@@ -207,7 +219,6 @@
                 <p class="switch-auth">Don't have an account? <a href="#" id="show-register">Create Account</a></p>
             </form>
 
-            <!-- Registration Form -->
             <form id="register-form" class="auth-form hidden">
                 <h2>Create Account</h2>
                 <div class="input-group">
@@ -219,14 +230,18 @@
                     <label for="reg-password">Password</label>
                     <div class="password-wrapper">
                         <input type="password" id="reg-password" required autocomplete="new-password" placeholder="At least 4 characters">
-                        <button type="button" class="toggle-password" data-target="reg-password">👁️</button>
+                        <button type="button" class="toggle-password" data-target="reg-password">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
                     </div>
                 </div>
                 <div class="input-group password-group">
                     <label for="reg-confirm-password">Confirm Password</label>
                     <div class="password-wrapper">
                         <input type="password" id="reg-confirm-password" required autocomplete="new-password" placeholder="Re-enter password">
-                        <button type="button" class="toggle-password" data-target="reg-confirm-password">👁️</button>
+                        <button type="button" class="toggle-password" data-target="reg-confirm-password">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
                     </div>
                 </div>
                 <div id="reg-error" class="error-msg"></div>
@@ -239,11 +254,17 @@
     <!-- MAIN APP CONTAINER -->
     <div id="app-container" class="app-screen hidden">
         <header class="app-header">
-            <div class="header-brand"><h2>ZAPCHAT ⚡</h2></div>
+            <div class="header-brand">
+                <h2>ZAPCHAT ⚡</h2>
+            </div>
             <div class="header-actions">
-                <button id="global-search-btn" class="icon-btn" title="Find Users">🔍</button>
+                <button id="global-search-btn" class="icon-btn" title="Find Users">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </button>
                 <div id="header-avatar" class="avatar-sm">U</div>
-                <button id="settings-menu-btn" class="icon-btn" title="Settings">⚙️</button>
+                <button id="settings-menu-btn" class="icon-btn" title="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </button>
             </div>
         </header>
 
@@ -251,23 +272,33 @@
             <nav class="desktop-sidebar">
                 <div class="sidebar-brand"><h2>ZAPCHAT ⚡</h2></div>
                 <ul class="sidebar-nav-links">
-                    <li class="nav-item active" data-target="chats-view"><span class="nav-icon">💬</span><span class="nav-label">Chats</span></li>
-                    <li class="nav-item" data-target="friends-view"><span class="nav-icon">👥</span><span class="nav-label">Find Users</span></li>
-                    <li class="nav-item" data-target="profile-view"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></li>
-                    <li class="nav-item" data-target="settings-view"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></li>
+                    <li class="nav-item active" data-target="chats-view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>Chats</span>
+                    </li>
+                    <li class="nav-item" data-target="friends-view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>Find Users</span>
+                    </li>
+                    <li class="nav-item" data-target="profile-view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Profile</span>
+                    </li>
+                    <li class="nav-item" data-target="settings-view">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <span>Settings</span>
+                    </li>
                 </ul>
             </nav>
 
             <main class="main-content-area">
                 <!-- 1. CHATS VIEW -->
                 <section id="chats-view" class="view-section active">
-                    <div class="view-header">
-                        <h2>Chats</h2>
-                    </div>
+                    <div class="view-header"><h2>Chats</h2></div>
                     <div id="conversations-list" class="conversations-list"></div>
-                    <div id="chats-empty-state" class="hidden" style="text-align:center; margin-top:40px;">
-                        <p>No conversations yet.</p>
-                        <button class="btn secondary-btn" onclick="switchView('friends-view')" style="margin-top:10px;">Find Users to Chat</button>
+                    <div id="chats-empty-state" class="hidden" style="text-align:center; margin-top:50px;">
+                        <p style="color:var(--text-secondary); margin-bottom:12px;">No active conversations.</p>
+                        <button class="btn secondary-btn" onclick="switchView('friends-view')">Find Users to Chat</button>
                     </div>
                 </section>
 
@@ -275,8 +306,8 @@
                 <section id="friends-view" class="view-section">
                     <div class="view-header">
                         <h2>Find Users</h2>
-                        <div style="display:flex; gap:8px; width:300px;">
-                            <input type="text" id="user-search-input" placeholder="Filter username...">
+                        <div style="display:flex; gap:8px; width:280px;">
+                            <input type="text" id="user-search-input" placeholder="Search username...">
                         </div>
                     </div>
                     <div id="search-results-list" class="user-list"></div>
@@ -290,7 +321,7 @@
                             <div id="profile-avatar-display" class="avatar-lg">U</div>
                             <button type="button" id="upload-avatar-btn" class="btn secondary-btn-sm" style="margin-top:8px;">Change Profile Picture</button>
                             <input type="file" id="avatar-file-input" accept="image/*" class="hidden">
-                            <p id="upload-status" style="font-size:11px; color:var(--text-secondary); margin-top:4px;"></p>
+                            <p id="upload-status" style="font-size:11px; color:var(--text-secondary); margin-top:4px; font-weight:500;"></p>
                         </div>
 
                         <div class="form-group"><label>Username</label><input type="text" id="profile-username" readonly class="readonly-input"></div>
@@ -305,14 +336,41 @@
                 <section id="settings-view" class="view-section">
                     <div class="view-header"><h2>Settings</h2></div>
                     <div class="settings-list notebook-paper">
-                        <div class="setting-item" id="install-pwa-btn" style="color: var(--purple-primary); font-weight: bold;">
-                            <span>📱 Install ZAPCHAT App</span>
+                        <div class="setting-item" id="install-pwa-btn" style="color: var(--purple-primary);">
+                            <span style="display:flex; align-items:center; gap:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Install ZAPCHAT App
+                            </span>
                             <span>➔</span>
                         </div>
-                        <div class="setting-item" onclick="switchView('profile-view')"><span>👤 Edit Profile & Picture</span><span>➔</span></div>
-                        <div class="setting-item" onclick="alert('ZAPCHAT ⚡ v1.0.0 — Notebook-Inspired Messaging')"><span>ℹ️ About ZAPCHAT</span><span>➔</span></div>
-                        <div class="setting-item" onclick="switchView('developer-view')"><span>⚡ Meet the Developer (AKKU ZAP)</span><span>➔</span></div>
-                        <div class="setting-item danger" id="logout-btn"><span>🚪 Log Out</span><span>➔</span></div>
+                        <div class="setting-item" onclick="switchView('profile-view')">
+                            <span style="display:flex; align-items:center; gap:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Edit Profile & Picture
+                            </span>
+                            <span>➔</span>
+                        </div>
+                        <div class="setting-item" onclick="alert('ZAPCHAT ⚡ v1.0.0 — Modern Secure Messaging')">
+                            <span style="display:flex; align-items:center; gap:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                About ZAPCHAT
+                            </span>
+                            <span>➔</span>
+                        </div>
+                        <div class="setting-item" onclick="switchView('developer-view')">
+                            <span style="display:flex; align-items:center; gap:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                Meet the Developer (AKKU ZAP)
+                            </span>
+                            <span>➔</span>
+                        </div>
+                        <div class="setting-item danger" id="logout-btn">
+                            <span style="display:flex; align-items:center; gap:10px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                Log Out
+                            </span>
+                            <span>➔</span>
+                        </div>
                     </div>
                 </section>
 
@@ -326,7 +384,7 @@
                         <div class="dev-avatar">⚡</div>
                         <h3>AKKU ZAP ⚡</h3>
                         <p class="dev-role">Founder & Developer of ZAPCHAT</p>
-                        <p class="dev-bio">Passionate software architect and designer crafting minimalist, high-performance, and secure real-time messaging systems with a modern notebook aesthetic.</p>
+                        <p class="dev-bio">Passionate software architect and designer crafting minimalist, high-performance, and secure real-time messaging systems with a modern aesthetic.</p>
                         <div class="dev-links" style="margin-top: 15px;">
                             <a href="https://www.instagram.com/_akku__zap_?exln=MWF3d2RueWtxaGJ5cg==" target="_blank" class="btn secondary-btn-sm" style="text-decoration:none;">Instagram Profile</a>
                         </div>
@@ -336,12 +394,19 @@
                 <!-- 6. PRIVATE CHAT SCREEN -->
                 <section id="chat-screen" class="chat-screen hidden">
                     <div class="chat-header">
-                        <button id="close-chat-btn" class="icon-btn">←</button>
-                        <div id="chat-friend-avatar" class="avatar-sm">F</div>
-                        <div class="chat-friend-info">
-                            <h3 id="chat-friend-username">username</h3>
-                            <span class="status-indicator">online</span>
+                        <div class="chat-header-left">
+                            <button id="close-chat-btn" class="icon-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                            </button>
+                            <div id="chat-friend-avatar" class="avatar-sm">F</div>
+                            <div class="chat-friend-info">
+                                <h3 id="chat-friend-username">username</h3>
+                                <span class="status-indicator" id="chat-status-text">Active</span>
+                            </div>
                         </div>
+                        <button id="clear-chat-btn" class="icon-btn" title="Clear Chat History">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
                     </div>
                     <div id="messages-container" class="messages-container"></div>
                     <div class="message-composer">
@@ -353,20 +418,31 @@
         </div>
 
         <nav class="mobile-bottom-nav">
-            <button class="nav-item-mobile active" data-target="chats-view"><span class="nav-icon">💬</span><span class="nav-label">Chats</span></button>
-            <button class="nav-item-mobile" data-target="friends-view"><span class="nav-icon">👥</span><span class="nav-label">Find</span></button>
-            <button class="nav-item-mobile" data-target="profile-view"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
-            <button class="nav-item-mobile" data-target="settings-view"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></button>
+            <button class="nav-item-mobile active" data-target="chats-view">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Chats</span>
+            </button>
+            <button class="nav-item-mobile" data-target="friends-view">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Find</span>
+            </button>
+            <button class="nav-item-mobile" data-target="profile-view">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Profile</span>
+            </button>
+            <button class="nav-item-mobile" data-target="settings-view">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+            </button>
         </nav>
     </div>
 
-    <!-- Firebase, IndexedDB Cache & App Integration -->
+    <!-- Firebase, IndexedDB & App Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, orderBy, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, orderBy, onSnapshot, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // IndexedDB Helper for Caching User Profiles
         const DB_NAME = "zapchat_cache";
         const STORE_NAME = "users";
         let dbIDB = null;
@@ -403,7 +479,6 @@
             });
         }
 
-        // PWA Install Prompt Handler
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -413,14 +488,12 @@
         document.getElementById("install-pwa-btn").addEventListener("click", async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const choiceResult = await deferredPrompt.userChoice;
                 deferredPrompt = null;
             } else {
-                alert("ZAPCHAT is already installed or your browser requires manual installation via browser menu (Add to Home screen).");
+                alert("ZAPCHAT is already installed or your browser requires manual installation via browser menu.");
             }
         });
 
-        // PWA Service Worker Registration Inline
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
@@ -455,15 +528,13 @@
         const SESSION_KEY = "zapchat_current_user";
         const IMGBB_API_KEY = "374b4f518dad39ead177ba0e4b4a38f5";
 
-        // Password toggle
         document.querySelectorAll(".toggle-password").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                const input = document.getElementById(e.target.getAttribute("data-target"));
+            btn.addEventListener("click", () => {
+                const input = document.getElementById(btn.getAttribute("data-target"));
                 input.type = input.type === "password" ? "text" : "password";
             });
         });
 
-        // Auth Screens Switch
         document.getElementById("show-register").addEventListener("click", (e) => {
             e.preventDefault();
             document.getElementById("login-form").classList.add("hidden");
@@ -475,7 +546,6 @@
             document.getElementById("login-form").classList.remove("hidden");
         });
 
-        // Registration
         document.getElementById("register-form").addEventListener("submit", async (e) => {
             e.preventDefault();
             const errEl = document.getElementById("reg-error");
@@ -506,11 +576,10 @@
                 initApp(userData);
             } catch (err) {
                 console.error(err);
-                errEl.textContent = "Registration failed. Check rules.";
+                errEl.textContent = "Registration failed.";
             }
         });
 
-        // Login
         document.getElementById("login-form").addEventListener("submit", async (e) => {
             e.preventDefault();
             const errEl = document.getElementById("login-error");
@@ -534,22 +603,18 @@
             }
         });
 
-        // Logout
         document.getElementById("logout-btn").addEventListener("click", () => {
             localStorage.removeItem(SESSION_KEY);
             location.reload();
         });
 
-        // Navigation Switcher
         window.switchView = (id) => {
             document.querySelectorAll(".view-section").forEach(s => s.classList.remove("active"));
             document.getElementById(id).classList.add("active");
             document.querySelectorAll(".sidebar-nav-links li, .mobile-bottom-nav button").forEach(n => {
                 n.classList.toggle("active", n.getAttribute("data-target") === id);
             });
-            if (id === 'friends-view') {
-                fetchAllUsers();
-            }
+            if (id === 'friends-view') fetchAllUsers();
         };
 
         document.querySelectorAll(".sidebar-nav-links li, .mobile-bottom-nav button").forEach(item => {
@@ -565,7 +630,6 @@
         let allUsersCache = [];
         let uploadedPhotoURL = "";
 
-        // Profile Picture Upload Handler via Imgbb API
         document.getElementById("upload-avatar-btn").addEventListener("click", () => {
             document.getElementById("avatar-file-input").click();
         });
@@ -593,7 +657,7 @@
                     displayEl.textContent = "";
                     statusEl.textContent = "Upload successful! Click Save Changes.";
                 } else {
-                    statusEl.textContent = "Upload failed. Try another image.";
+                    statusEl.textContent = "Upload failed.";
                 }
             } catch (err) {
                 console.error(err);
@@ -607,7 +671,6 @@
             document.getElementById("auth-container").classList.add("hidden");
             document.getElementById("app-container").classList.remove("hidden");
 
-            // Profile Setup
             document.getElementById("profile-username").value = `@${user.username}`;
             document.getElementById("profile-display-name").value = user.displayName || "";
             document.getElementById("profile-bio").value = user.bio || "";
@@ -650,7 +713,6 @@
                 alert("Profile updated successfully!");
             };
 
-            // Conversations Listener
             const convsQuery = query(collection(db, "conversations"), where("participantUsernames", "array-contains", user.username));
             onSnapshot(convsQuery, async (snapshot) => {
                 const list = document.getElementById("conversations-list");
@@ -667,9 +729,7 @@
                     
                     const otherUserSnap = await getDoc(doc(db, "users", otherUsername));
                     let otherPhoto = "";
-                    if (otherUserSnap.exists()) {
-                        otherPhoto = otherUserSnap.data().photoURL;
-                    }
+                    if (otherUserSnap.exists()) otherPhoto = otherUserSnap.data().photoURL;
 
                     const card = document.createElement("div");
                     card.className = "conversation-card";
@@ -694,9 +754,7 @@
 
         window.addEventListener("DOMContentLoaded", () => {
             const saved = localStorage.getItem(SESSION_KEY);
-            if (saved) {
-                initApp(JSON.parse(saved));
-            }
+            if (saved) initApp(JSON.parse(saved));
         });
 
         async function fetchAllUsers() {
@@ -705,14 +763,10 @@
             try {
                 const snap = await getDocs(collection(db, "users"));
                 allUsersCache = [];
-                snap.forEach(d => {
-                    allUsersCache.push(d.data());
-                });
-                // Save loaded users into IndexedDB for offline use
+                snap.forEach(d => allUsersCache.push(d.data()));
                 await saveUsersToIndexedDB(allUsersCache);
                 renderUserList(allUsersCache);
             } catch (err) {
-                console.warn("Offline mode: Loading users from IndexedDB cache.");
                 document.getElementById("offline-banner").classList.remove("hidden");
                 allUsersCache = await getUsersFromIndexedDB();
                 renderUserList(allUsersCache);
@@ -738,31 +792,23 @@
                         <div class="avatar-sm" ${avatarStyle}>${avatarText}</div>
                         <div class="user-card-details"><h4>@${u.username}</h4><p>${u.displayName || u.username}</p></div>
                     </div>
-                    <button class="btn primary-btn-sm" onclick="startChatWith('${u.username}')">Chat 💬</button>
+                    <button class="btn primary-btn-sm" onclick="startChatWith('${u.username}')">Message</button>
                 `;
                 list.appendChild(card);
             });
 
-            if (!found) {
-                list.innerHTML = "<p>No other accounts found.</p>";
-            }
+            if (!found) list.innerHTML = "<p>No other accounts found.</p>";
         }
 
         document.getElementById("user-search-input").addEventListener("input", (e) => {
             const term = e.target.value.trim().toLowerCase();
-            if (!term) {
-                renderUserList(allUsersCache);
-                return;
-            }
-            const filtered = allUsersCache.filter(u => u.username.toLowerCase().includes(term));
-            renderUserList(filtered);
+            if (!term) { renderUserList(allUsersCache); return; }
+            renderUserList(allUsersCache.filter(u => u.username.toLowerCase().includes(term)));
         });
 
-        // Show User Profile Modal when clicking someone's profile
         window.showUserProfile = async (username) => {
             let user = allUsersCache.find(u => u.username === username);
             if (!user) {
-                // Try fetching from IndexedDB or Firestore if not in cache
                 const cached = await getUsersFromIndexedDB();
                 user = cached.find(u => u.username === username);
             }
@@ -802,14 +848,10 @@
             let targetPhoto = "";
             
             const targetSnap = allUsersCache.find(u => u.username === targetUsername);
-            if (targetSnap) {
-                targetPhoto = targetSnap.photoURL || "";
-            }
+            if (targetSnap) targetPhoto = targetSnap.photoURL || "";
 
             snap.forEach(d => {
-                if (d.data().participantUsernames.includes(targetUsername)) {
-                    convId = d.id;
-                }
+                if (d.data().participantUsernames.includes(targetUsername)) convId = d.id;
             });
 
             if (!convId) {
@@ -852,7 +894,7 @@
             msgUnsub = onSnapshot(msgQuery, (snap) => {
                 msgCont.innerHTML = "";
                 if (snap.empty) {
-                    msgCont.innerHTML = "<p style='text-align:center; color:var(--text-secondary); margin-top:20px;'>Say hello! ⚡</p>";
+                    msgCont.innerHTML = "<p style='text-align:center; color:var(--text-secondary); margin-top:30px;'>Start the conversation! ⚡</p>";
                     return;
                 }
                 snap.forEach(d => {
@@ -871,6 +913,17 @@
             document.getElementById("chat-screen").classList.add("hidden");
             if (msgUnsub) msgUnsub();
             activeConvId = null;
+        });
+
+        // Clear Chat feature implementation
+        document.getElementById("clear-chat-btn").addEventListener("click", async () => {
+            if (!activeConvId) return;
+            if (confirm("Are you sure you want to clear this conversation?")) {
+                const msgSnap = await getDocs(collection(db, "conversations", activeConvId, "messages"));
+                const batchDeletions = msgSnap.docs.map(d => deleteDoc(d.ref));
+                await Promise.all(batchDeletions);
+                await updateDoc(doc(db, "conversations", activeConvId), { lastMessagePreview: "Conversation cleared" });
+            }
         });
 
         document.getElementById("send-message-btn").addEventListener("click", sendMsg);
