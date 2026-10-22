@@ -94,7 +94,7 @@
         .icon-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 8px; border-radius: 10px; color: var(--text-primary); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .icon-btn:hover { background: var(--lavender-light); color: var(--purple-primary); }
 
-        .avatar-sm, .avatar-lg { display: flex; align-items: center; justify-content: center; background: var(--lavender-accent); color: white; font-weight: 600; border-radius: 50%; overflow: hidden; background-size: cover; background-position: center; font-family: var(--font-heading); }
+        .avatar-sm, .avatar-lg { display: flex; align-items: center; justify-content: center; background: var(--lavender-accent); color: white; font-weight: 600; border-radius: 50%; overflow: hidden; background-size: cover; background-position: center; font-family: var(--font-heading); position: relative; }
         .avatar-sm { width: 40px; height: 40px; font-size: 15px; flex-shrink: 0; }
         .avatar-lg { width: 96px; height: 96px; font-size: 34px; margin: 0 auto 16px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 3px solid var(--purple-primary); }
 
@@ -122,8 +122,9 @@
         .conversation-card, .user-card { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 12px; background: var(--bg-notebook); border: 1px solid var(--border-color); cursor: pointer; width: 100%; transition: transform 0.1s ease, background 0.2s; }
         .conversation-card:hover, .user-card:hover { background: var(--lavender-light); border-color: var(--lavender-accent); }
         .conv-info { flex: 1; min-width: 0; margin-left: 14px; }
-        .conv-header-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .conv-username { font-weight: 700; font-size: 15px; font-family: var(--font-heading); }
+        .conv-header-row { display: flex; justify-content: space-between; margin-bottom: 4px; align-items: center; }
+        .conv-username { font-weight: 700; font-size: 15px; font-family: var(--font-heading); display: flex; align-items: center; gap: 8px; }
+        .unread-dot { width: 9px; height: 9px; background-color: var(--danger-color); border-radius: 50%; display: inline-block; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
         .conv-preview { font-size: 13px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
 
         .user-card-info { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
@@ -154,8 +155,10 @@
         .chat-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: white; border-bottom: 1px solid var(--border-color); height: 68px; flex-shrink: 0; }
         .chat-header-left { display: flex; align-items: center; gap: 14px; }
         .chat-friend-info h3 { font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); }
-        .status-indicator { font-size: 12px; color: var(--success-color); font-weight: 600; display: flex; align-items: center; gap: 4px; }
-        .status-indicator::before { content: ''; width: 6px; height: 6px; background: var(--success-color); border-radius: 50%; display: inline-block; }
+        .status-indicator { font-size: 12px; color: var(--text-secondary); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .status-indicator.online { color: var(--success-color); }
+        .status-indicator::before { content: ''; width: 6px; height: 6px; background: var(--text-secondary); border-radius: 50%; display: inline-block; }
+        .status-indicator.online::before { background: var(--success-color); }
         
         .messages-container { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 14px; background-color: var(--bg-notebook); }
         .message-bubble { max-width: 70%; padding: 12px 16px; border-radius: 16px; font-size: 14px; word-break: break-word; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
@@ -268,7 +271,7 @@
         </header>
 
         <div class="app-body">
-            <nav class="desktop-sidebar">
+            <nav id="desktop-sidebar" class="desktop-sidebar">
                 <div class="sidebar-brand"><h2>ZAPCHAT ⚡</h2></div>
                 <ul class="sidebar-nav-links">
                     <li class="nav-item active" data-target="chats-view">
@@ -400,7 +403,7 @@
                             <div id="chat-friend-avatar" class="avatar-sm">F</div>
                             <div class="chat-friend-info">
                                 <h3 id="chat-friend-username">username</h3>
-                                <span class="status-indicator" id="chat-status-text">Active</span>
+                                <span class="status-indicator" id="chat-status-text">Offline</span>
                             </div>
                         </div>
                         <button id="clear-chat-btn" class="icon-btn" title="Clear Chat History">
@@ -416,7 +419,7 @@
             </main>
         </div>
 
-        <nav class="mobile-bottom-nav">
+        <nav id="mobile-bottom-nav" class="mobile-bottom-nav">
             <button class="nav-item-mobile active" data-target="chats-view">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span>Chats</span>
@@ -430,7 +433,7 @@
                 <span>Profile</span>
             </button>
             <button class="nav-item-mobile" data-target="settings-view">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 <span>Settings</span>
             </button>
         </nav>
@@ -493,7 +496,6 @@
             }
         });
 
-        // Register Service Worker pointing to sw.js
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
@@ -559,7 +561,8 @@
                     displayName: username,
                     bio: "Hey there! I'm using ZAPCHAT ⚡",
                     photoURL: "",
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    lastSeen: new Date()
                 };
 
                 await setDoc(userRef, userData);
@@ -620,6 +623,7 @@
         let currentUser = null;
         let allUsersCache = [];
         let uploadedPhotoURL = "";
+        let presenceInterval = null;
 
         document.getElementById("upload-avatar-btn").addEventListener("click", () => {
             document.getElementById("avatar-file-input").click();
@@ -681,6 +685,16 @@
                 headerAvatar.textContent = user.username.charAt(0).toUpperCase();
             }
 
+            // Start presence heartbeat
+            async function updatePresence() {
+                try {
+                    await updateDoc(doc(db, "users", currentUser.username), { lastSeen: new Date() });
+                } catch (e) {}
+            }
+            updatePresence();
+            if (presenceInterval) clearInterval(presenceInterval);
+            presenceInterval = setInterval(updatePresence, 15000);
+
             document.getElementById("save-profile-btn").onclick = async () => {
                 const newName = document.getElementById("profile-display-name").value.trim();
                 const newBio = document.getElementById("profile-bio").value.trim();
@@ -714,30 +728,44 @@
                 }
                 document.getElementById("chats-empty-state").classList.add("hidden");
                 
-                snapshot.forEach(async (d) => {
-                    const conv = d.data();
+                // Sort conversations by updatedAt descending (newest activity on top)
+                const convs = [];
+                snapshot.forEach(d => {
+                    convs.push({ id: d.id, ...d.data() });
+                });
+                convs.sort((a, b) => {
+                    const tA = a.updatedAt?.toMillis ? a.updatedAt.toMillis() : (a.updatedAt?.seconds ? a.updatedAt.seconds * 1000 : 0);
+                    const tB = b.updatedAt?.toMillis ? b.updatedAt.toMillis() : (b.updatedAt?.seconds ? b.updatedAt.seconds * 1000 : 0);
+                    return tB - tA;
+                });
+
+                for (const conv of convs) {
                     const otherUsername = conv.participantUsernames.find(u => u !== user.username);
-                    
                     const otherUserSnap = await getDoc(doc(db, "users", otherUsername));
                     let otherPhoto = "";
                     if (otherUserSnap.exists()) otherPhoto = otherUserSnap.data().photoURL;
 
                     const card = document.createElement("div");
                     card.className = "conversation-card";
-                    card.onclick = () => openChat(d.id, otherUsername, otherPhoto);
+                    card.onclick = () => openChat(conv.id, otherUsername, otherPhoto);
                     
                     const avatarStyle = otherPhoto ? `style="background-image:url('${otherPhoto}'); background-size:cover; background-position:center;"` : "";
                     const avatarText = otherPhoto ? "" : otherUsername.charAt(0).toUpperCase();
 
+                    const unreadMap = conv.unreadBy || {};
+                    const isUnread = unreadMap[user.username] === true;
+
                     card.innerHTML = `
                         <div class="avatar-sm" ${avatarStyle}>${avatarText}</div>
                         <div class="conv-info">
-                            <div class="conv-header-row"><span class="conv-username">@${otherUsername}</span></div>
+                            <div class="conv-header-row">
+                                <span class="conv-username">@${otherUsername} ${isUnread ? '<span class="unread-dot"></span>' : ''}</span>
+                            </div>
                             <div class="conv-preview">${conv.lastMessagePreview || 'No messages yet'}</div>
                         </div>
                     `;
                     list.appendChild(card);
-                });
+                }
             });
 
             fetchAllUsers();
@@ -850,7 +878,8 @@
                     participantUsernames: [currentUser.username, targetUsername],
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    lastMessagePreview: "Started conversation"
+                    lastMessagePreview: "Started conversation",
+                    unreadBy: {}
                 });
                 convId = newConv.id;
             }
@@ -860,6 +889,7 @@
 
         let activeConvId = null;
         let msgUnsub = null;
+        let presenceUnsub = null;
 
         window.openChat = async (convId, friendUsername, friendPhoto = "") => {
             activeConvId = convId;
@@ -876,7 +906,44 @@
                 chatAvatar.textContent = friendUsername.charAt(0).toUpperCase();
             }
 
+            // Hide tabs / navigation bars when opening chat
+            document.getElementById("desktop-sidebar").style.display = "none";
+            document.getElementById("mobile-bottom-nav").style.display = "none";
             document.getElementById("chat-screen").classList.remove("hidden");
+
+            // Clear unread dot for current user in Firestore
+            try {
+                const convRef = doc(db, "conversations", convId);
+                const convSnap = await getDoc(convRef);
+                if (convSnap.exists()) {
+                    const unreadBy = convSnap.data().unreadBy || {};
+                    if (unreadBy[currentUser.username]) {
+                        unreadBy[currentUser.username] = false;
+                        await updateDoc(convRef, { unreadBy });
+                    }
+                }
+            } catch (e) {}
+
+            // Track real-time presence of friend
+            if (presenceUnsub) presenceUnsub();
+            presenceUnsub = onSnapshot(doc(db, "users", friendUsername), (userSnap) => {
+                const statusEl = document.getElementById("chat-status-text");
+                if (userSnap.exists()) {
+                    const data = userSnap.data();
+                    const lastSeen = data.lastSeen?.toDate ? data.lastSeen.toDate() : (data.lastSeen?.seconds ? new Date(data.lastSeen.seconds * 1000) : new Date(0));
+                    const diffSeconds = (Date.now() - lastSeen.getTime()) / 1000;
+                    if (diffSeconds < 30) {
+                        statusEl.textContent = "Active";
+                        statusEl.className = "status-indicator online";
+                    } else {
+                        statusEl.textContent = "Offline";
+                        statusEl.className = "status-indicator";
+                    }
+                } else {
+                    statusEl.textContent = "Offline";
+                    statusEl.className = "status-indicator";
+                }
+            });
 
             if (msgUnsub) msgUnsub();
             const msgCont = document.getElementById("messages-container");
@@ -902,7 +969,11 @@
 
         document.getElementById("close-chat-btn").addEventListener("click", () => {
             document.getElementById("chat-screen").classList.add("hidden");
+            // Restore navigation bars on back/close
+            document.getElementById("desktop-sidebar").style.display = "";
+            document.getElementById("mobile-bottom-nav").style.display = "";
             if (msgUnsub) msgUnsub();
+            if (presenceUnsub) presenceUnsub();
             activeConvId = null;
         });
 
@@ -912,7 +983,7 @@
                 const msgSnap = await getDocs(collection(db, "conversations", activeConvId, "messages"));
                 const batchDeletions = msgSnap.docs.map(d => deleteDoc(d.ref));
                 await Promise.all(batchDeletions);
-                await updateDoc(doc(db, "conversations", activeConvId), { lastMessagePreview: "Conversation cleared" });
+                await updateDoc(doc(db, "conversations", activeConvId), { lastMessagePreview: "Conversation cleared", updatedAt: new Date() });
             }
         });
 
@@ -926,14 +997,28 @@
             const text = input.value.trim();
             if (!text || !activeConvId) return;
             input.value = "";
+
             await addDoc(collection(db, "conversations", activeConvId, "messages"), {
                 senderUsername: currentUser.username,
                 text,
                 createdAt: new Date()
             });
-            await updateDoc(doc(db, "conversations", activeConvId), {
+
+            // Fetch conversation to mark unread for the recipient
+            const convRef = doc(db, "conversations", activeConvId);
+            const convSnap = await getDoc(convRef);
+            let unreadBy = {};
+            if (convSnap.exists()) {
+                const participants = convSnap.data().participantUsernames || [];
+                const recipient = participants.find(u => u !== currentUser.username);
+                unreadBy = convSnap.data().unreadBy || {};
+                if (recipient) unreadBy[recipient] = true;
+            }
+
+            await updateDoc(convRef, {
                 updatedAt: new Date(),
-                lastMessagePreview: text
+                lastMessagePreview: text,
+                unreadBy
             });
         }
     </script>
