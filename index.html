@@ -447,17 +447,21 @@
 
         const DB_NAME = "zapchat_cache";
         const STORE_NAME = "users";
+        const CONV_STORE_NAME = "conversations";
         let dbIDB = null;
 
         function openIndexedDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
+                const request = indexedDB.open(DB_NAME, 2);
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => { dbIDB = request.result; resolve(dbIDB); };
                 request.onupgradeneeded = (e) => {
                     const db = e.target.result;
                     if (!db.objectStoreNames.contains(STORE_NAME)) {
                         db.createObjectStore(STORE_NAME, { keyPath: "username" });
+                    }
+                    if (!db.objectStoreNames.contains(CONV_STORE_NAME)) {
+                        db.createObjectStore(CONV_STORE_NAME, { keyPath: "id" });
                     }
                 };
             });
@@ -475,6 +479,24 @@
             return new Promise((resolve) => {
                 const transaction = dbIDB.transaction(STORE_NAME, "readonly");
                 const store = transaction.objectStore(STORE_NAME);
+                const request = store.getAll();
+                request.onsuccess = () => resolve(request.result || []);
+                request.onerror = () => resolve([]);
+            });
+        }
+
+        async function saveConversationsToIndexedDB(convs) {
+            if (!dbIDB) await openIndexedDB();
+            const transaction = dbIDB.transaction(CONV_STORE_NAME, "readwrite");
+            const store = transaction.objectStore(CONV_STORE_NAME);
+            convs.forEach(c => store.put(c));
+        }
+
+        async function getConversationsFromIndexedDB() {
+            if (!dbIDB) await openIndexedDB();
+            return new Promise((resolve) => {
+                const transaction = dbIDB.transaction(CONV_STORE_NAME, "readonly");
+                const store = transaction.objectStore(CONV_STORE_NAME);
                 const request = store.getAll();
                 request.onsuccess = () => resolve(request.result || []);
                 request.onerror = () => resolve([]);
@@ -685,6 +707,12 @@
                 headerAvatar.textContent = user.username.charAt(0).toUpperCase();
             }
 
+            // INSTANT LOAD: Render cached conversations immediately before network fetch completes
+            const cachedConvs = await getConversationsFromIndexedDB();
+            if (cachedConvs && cachedConvs.length > 0) {
+                renderConversationsList(cachedConvs, user.username);
+            }
+
             // Start presence heartbeat
             async function updatePresence() {
                 try {
@@ -720,15 +748,6 @@
 
             const convsQuery = query(collection(db, "conversations"), where("participantUsernames", "array-contains", user.username));
             onSnapshot(convsQuery, async (snapshot) => {
-                const list = document.getElementById("conversations-list");
-                list.innerHTML = "";
-                if (snapshot.empty) {
-                    document.getElementById("chats-empty-state").classList.remove("hidden");
-                    return;
-                }
-                document.getElementById("chats-empty-state").classList.add("hidden");
-                
-                // Sort conversations by updatedAt descending (newest activity on top)
                 const convs = [];
                 snapshot.forEach(d => {
                     convs.push({ id: d.id, ...d.data() });
@@ -739,36 +758,53 @@
                     return tB - tA;
                 });
 
-                for (const conv of convs) {
-                    const otherUsername = conv.participantUsernames.find(u => u !== user.username);
-                    const otherUserSnap = await getDoc(doc(db, "users", otherUsername));
-                    let otherPhoto = "";
-                    if (otherUserSnap.exists()) otherPhoto = otherUserSnap.data().photoURL;
-
-                    const card = document.createElement("div");
-                    card.className = "conversation-card";
-                    card.onclick = () => openChat(conv.id, otherUsername, otherPhoto);
-                    
-                    const avatarStyle = otherPhoto ? `style="background-image:url('${otherPhoto}'); background-size:cover; background-position:center;"` : "";
-                    const avatarText = otherPhoto ? "" : otherUsername.charAt(0).toUpperCase();
-
-                    const unreadMap = conv.unreadBy || {};
-                    const isUnread = unreadMap[user.username] === true;
-
-                    card.innerHTML = `
-                        <div class="avatar-sm" ${avatarStyle}>${avatarText}</div>
-                        <div class="conv-info">
-                            <div class="conv-header-row">
-                                <span class="conv-username">@${otherUsername} ${isUnread ? '<span class="unread-dot"></span>' : ''}</span>
-                            </div>
-                            <div class="conv-preview">${conv.lastMessagePreview || 'No messages yet'}</div>
-                        </div>
-                    `;
-                    list.appendChild(card);
-                }
+                // Cache conversations locally for instant subsequent loads
+                await saveConversationsToIndexedDB(convs);
+                renderConversationsList(convs, user.username);
             });
 
             fetchAllUsers();
+        }
+
+        async function renderConversationsList(convs, currentUsername) {
+            const list = document.getElementById("conversations-list");
+            list.innerHTML = "";
+            if (!convs || convs.length === 0) {
+                document.getElementById("chats-empty-state").classList.remove("hidden");
+                return;
+            }
+            document.getElementById("chats-empty-state").classList.add("hidden");
+            
+            for (const conv of convs) {
+                const otherUsername = conv.participantUsernames.find(u => u !== currentUsername);
+                if (!otherUsername) continue;
+
+                let otherPhoto = "";
+                const cachedUsers = await getUsersFromIndexedDB();
+                const foundUser = cachedUsers.find(u => u.username === otherUsername);
+                if (foundUser) otherPhoto = foundUser.photoURL || "";
+
+                const card = document.createElement("div");
+                card.className = "conversation-card";
+                card.onclick = () => openChat(conv.id, otherUsername, otherPhoto);
+                
+                const avatarStyle = otherPhoto ? `style="background-image:url('${otherPhoto}'); background-size:cover; background-position:center;"` : "";
+                const avatarText = otherPhoto ? "" : otherUsername.charAt(0).toUpperCase();
+
+                const unreadMap = conv.unreadBy || {};
+                const isUnread = unreadMap[currentUsername] === true;
+
+                card.innerHTML = `
+                    <div class="avatar-sm" ${avatarStyle}>${avatarText}</div>
+                    <div class="conv-info">
+                        <div class="conv-header-row">
+                            <span class="conv-username">@${otherUsername} ${isUnread ? '<span class="unread-dot"></span>' : ''}</span>
+                        </div>
+                        <div class="conv-preview">${conv.lastMessagePreview || 'No messages yet'}</div>
+                    </div>
+                `;
+                list.appendChild(card);
+            }
         }
 
         window.addEventListener("DOMContentLoaded", () => {
@@ -778,7 +814,7 @@
 
         async function fetchAllUsers() {
             const list = document.getElementById("search-results-list");
-            list.innerHTML = "<p>Loading accounts...</p>";
+            if (list.children.length === 0) list.innerHTML = "<p>Loading accounts...</p>";
             try {
                 const snap = await getDocs(collection(db, "users"));
                 allUsersCache = [];
